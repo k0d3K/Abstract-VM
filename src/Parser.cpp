@@ -18,6 +18,7 @@ e_Operation Parser::toOperation(const std::string& opStr) const
 	static const std::map<std::string, e_Operation> opMap = {
 		{"push", PUSH},
 		{"pop", POP},
+		{"swap", SWAP},
 		{"dump", DUMP},
 		{"assert", ASSERT},
 		{"add", ADD},

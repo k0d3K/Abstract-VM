@@ -20,6 +20,7 @@ private:
 	void	push(const IOperand *operand);
 	void	assert(const IOperand *operand);
 	void	pop();
+	void	swap();
 	void	dump();
 	void	add();
 	void	sub();

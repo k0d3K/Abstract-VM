@@ -553,8 +553,47 @@ void test_comments()
 
 }
 
+void test_swap()
+{
+	Tester::startTest("swap");
+
+	// Basic swap
+	AssertResult("push int8(1)\npush int8(2)\nswap\ndump\nexit\n", "1\n2\n");
+
+	// Swap + add
+	AssertResult("push int8(3)\npush int8(5)\nswap\nadd\ndump\nexit\n", "8\n");
+
+	// Swap + sub
+	AssertResult("push int8(10)\npush int8(4)\nswap\nsub\ndump\nexit\n", "-6\n");
+
+	// Swap + mul
+	AssertResult("push int8(2)\npush int8(7)\nswap\nmul\ndump\nexit\n", "14\n");
+
+	// Swap + div (integer division)
+	AssertResult("push int8(3)\npush int8(10)\nswap\ndiv\ndump\nexit\n", "3\n");
+
+	// Swap + mod
+	AssertResult("push int8(10)\npush int8(3)\nswap\nmod\ndump\nexit\n", "3\n");
+
+	// Swap + assert
+	AssertResult("push int8(5)\npush int8(7)\nswap\nassert int8(5)\ndump\nexit\n", "5\n7\n");
+
+	// Swap + complex combination
+	AssertResult("push int8(2)\npush int8(3)\npush int8(4)\nswap\nadd\nswap\nmul\ndump\nexit\n", "14\n");
+
+	Tester::startTest("swap");
+
+	// Swap with overflow check
+	AssertError("push int8(127)\npush int8(1)\nswap\nadd\nexit\n", "overflow");
+
+	// Swap on undersized stack
+	AssertError("swap\nexit\n", "stack");
+	AssertError("push int8(5)\nswap\nexit\n", "stack");
+}
+
 int main()
 {
+	//parsing test
 	push_test();
 	assert_test();
 	pop_test();
@@ -569,6 +608,9 @@ int main()
 	exit_test();
 	more_fun();
 	test_comments();
+	std::cout << std::endl << std::endl << "########## BONUS PART ##########" << std::flush;
+	test_swap();
+	//test multi errors
 	Tester::printResults();
 	return 0;
 }

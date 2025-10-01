@@ -54,6 +54,18 @@ void CommandsExecutor::pop()
 	del = nullptr;
 }
 
+void CommandsExecutor::swap()
+{
+	if (stack_.size() < 2)
+		throw ImpossibleInstructionException("swap");
+	const IOperand * right = stack_.back();
+	stack_.pop_back();
+	const IOperand * left = stack_.back();
+	stack_.pop_back();
+	stack_.push_back(right);
+	stack_.push_back(left);
+}
+
 void CommandsExecutor::dump()
 {
 	for (auto it = stack_.rbegin(); it != stack_.rend(); ++it)
@@ -166,6 +178,7 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> instructions)
 {
 	static const std::map<e_Operation, void (CommandsExecutor::*)()> noArgOps = {
 		{POP, &CommandsExecutor::pop},
+		{SWAP, &CommandsExecutor::swap},
 		{DUMP, &CommandsExecutor::dump},
 		{ADD, &CommandsExecutor::add},
 		{SUB, &CommandsExecutor::sub},

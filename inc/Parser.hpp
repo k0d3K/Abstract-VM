@@ -4,7 +4,7 @@
 #include "Lexer.hpp"
 #include <list>
 
-enum e_Operation {PUSH, ASSERT, POP, DUMP, ADD, SUB, MUL, DIV, MOD, PRINT, EXIT, NONE};
+enum e_Operation {PUSH, ASSERT, POP, SWAP, DUMP, ADD, SUB, MUL, DIV, MOD, PRINT, EXIT, NONE};
 
 typedef struct s_ParsedInstr
 {
