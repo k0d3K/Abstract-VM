@@ -40,7 +40,7 @@ static std::string builtErrorMessage(Error &error)
 	static const std::map<e_ErrorType, const char *> explain = {
 		{e_ErrorType::InvalidTypeException, "syntax error : unknown type"},
 		{e_ErrorType::MissingParException, "syntax error : missing parenthesis"},
-		{e_ErrorType::UnknownInstructionException, " unknowm instruction"},
+		{e_ErrorType::UnknownInstructionException, " unknown instruction"},
 		{e_ErrorType::OverflowException, "overflow"},
 		{e_ErrorType::UnderflowException, "underflow"},
 		{e_ErrorType::EmtpyStackException, "impossible instruction, the stack is empty"},
