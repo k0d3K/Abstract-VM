@@ -2,6 +2,8 @@
 
 BUILD_DIR		:= .build/
 NAME			:= avm
+DEBUG_NAME		:= $(NAME)_debug
+TESTER_NAME		:= tester
 CXX				:= c++
 CXXFLAGS		+= -Wall -Wextra -Werror -g
 
@@ -19,6 +21,7 @@ SRC_TESTER		:= $(addsuffix .cpp, $(SRC_TESTER))
 OBJ				:= $(SRC:%.cpp=$(BUILD_DIR)%.o)
 OBJ_TESTER		:= $(SRC_TESTER:%.cpp=$(BUILD_DIR)%.o)
 OBJ_DIR			:= $(sort $(shell dirname $(OBJ)))
+DEBUG_OBJ		:= $(OBJ:.o=_debug.o)
 
 #==================== COLOR =====================#
 
@@ -43,13 +46,25 @@ $(BUILD_DIR)%.o:	$(SRC_DIR)%.cpp | $(OBJ_DIR)
 	@echo "$(GREEN)Compiling : $(MAGENTA)$<$(INIT)"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ -Iinc
 
+$(BUILD_DIR)%_debug.o: $(SRC_DIR)%.cpp | $(OBJ_DIR)
+	@echo "$(GREEN)Compiling debug : $(MAGENTA)$<$(INIT)"
+	@$(CXX) $(CXXFLAGS) -D DEBUG=1 -c $< -o $@ -Iinc
+
 $(BUILD_DIR)%.o:	avm_tester/%.cpp | $(OBJ_DIR)
 	@echo "$(GREEN)Compiling : $(MAGENTA)$<$(INIT)"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ -Iinc
 
-tester:	$(NAME) $(OBJ_TESTER)
+$(DEBUG_NAME):	$(DEBUG_OBJ)
+	@$(CXX) $(CXXFLAGS) -D DEBUG=1 $(DEBUG_OBJ) -o $(DEBUG_NAME) -Iinc
+	@echo "$(GREEN)$(DEBUG_NAME) ready ✅️$(INIT)"
+
+debug: $(DEBUG_NAME)
+
+$(TESTER_NAME):	$(NAME) $(OBJ_TESTER)
 	@$(CXX) $(CXXFLAGS) $(OBJ_TESTER) -o tester -Iinc -Itester
 	@echo "$(GREEN)tester ready ✅️$(INIT)"
+
+test : $(TESTER_NAME)
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -66,13 +81,17 @@ fclean:	clean
 		echo "$(RED)Removing : $(MAGENTA)$(NAME)$(INIT)";\
 		rm -f $(NAME) ;\
 	fi;
+	@if [ -f $(DEBUG_NAME) ]; then\
+		echo "$(RED)Removing : $(MAGENTA)$(DEBUG_NAME)$(INIT)";\
+		rm -f $(DEBUG_NAME) ;\
+	fi;
 	@if [ -f tester ]; then\
 		echo "$(RED)Removing : $(MAGENTA)tester$(INIT)";\
 		rm -f tester;\
 	fi;
 
 re:		fclean all
-rem:	fclean tester
+red:	fclean debug
+ret:	fclean test
 
-
-.PHONY: all clean fclean tester re rem
+.PHONY: all clean fclean test re ret

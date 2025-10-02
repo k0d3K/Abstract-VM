@@ -55,7 +55,6 @@ e_OperandType Parser::toType(const std::string& type) const
 	return it->second;
 }
 
-
 std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> &lexTokens) const
 {
 	std::list<t_ParsedInstr>	parsTokens;
@@ -106,5 +105,12 @@ std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> &lexTokens) const
 		parsTokens.push_back(parsToken);
 	}
 	return parsTokens;
+}
+
+void Parser::cleanTokens(const std::list<t_ParsedInstr>& tokens)
+{
+	for (const t_ParsedInstr& token : tokens)
+		if (token.operand != nullptr)
+			delete token.operand;
 }
 

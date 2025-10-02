@@ -7,10 +7,11 @@
 #include "CommandsExecutor.hpp"
 
 #ifdef DEBUG
-
 void printTokens(const std::list<t_LexToken>& tokens)
 {
 	int nb = 1;
+	std::cout << "##### Lexer output #####" << std::endl;
+	std::cout << "------------------------" << std::endl;
 	for (const t_LexToken& token : tokens)
 	{
 		std::cout << nb++ << ":\n";
@@ -24,24 +25,18 @@ void printTokens(const std::list<t_LexToken>& tokens)
 void printTokens(const std::list<t_ParsedInstr>& tokens)
 {
 	int nb = 1;
+	std::cout << "##### Parser output #####" << std::endl;
+	std::cout << "-------------------------" << std::endl;
 	for (const t_ParsedInstr& token : tokens)
 	{
 		std::cout << nb++ << ":\n";
 		std::cout << "  instruction: " << token.instruction << std::endl;
 		std::cout << "  operandType: " << token.operandType << std::endl;
 		std::cout << "  operand:     " << (token.operand == nullptr ? "<none>" : token.operand->toString()) << std::endl;
-		std::cout << "------------------------" << std::endl;
+		std::cout << "-------------------------" << std::endl;
 	}
 }
-
 #endif
-
-void cleanTokens(const std::list<t_ParsedInstr>& tokens)
-{
-	for (const t_ParsedInstr& token : tokens)
-		if (token.operand != nullptr)
-			delete token.operand;
-}
 
 int main(int argc, char **argv)
 {
@@ -70,20 +65,18 @@ int main(int argc, char **argv)
 	}
 
 	std::list<t_LexToken> lexTokens = Lexer::getInstance().lexicalAnalisys(input);
-#ifdef DEBUG
-	printTokens(lexTokens);
-	ctd::cout << std::endl;
-#endif
 	std::list<t_ParsedInstr> parstokens = Parser::getInstance().parse(lexTokens);
 #ifdef DEBUG
+	printTokens(lexTokens);
+	std::cout << std::endl;
 	printTokens(parstokens);
-	ctd::cout << std::endl;
+	std::cout << std::endl << "##### Program output #####" << std::endl << std::endl;
 #endif
 	if (AVMException::isError())
 		AVMException::printErrors();
 	else
 		CommandsExecutor::getInstance().execute(parstokens);
-	cleanTokens(parstokens);
+	Parser::cleanTokens(parstokens);
 	if (inFile.is_open())
 		inFile.close();
 	return 0;

@@ -21,6 +21,7 @@ public:
 	static Parser& getInstance();
 
 	std::list<t_ParsedInstr> parse(std::list<t_LexToken> &lexTokens) const;
+	static void cleanTokens(const std::list<t_ParsedInstr>& tokens);
 
 private:
 
