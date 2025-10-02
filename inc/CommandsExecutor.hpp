@@ -28,6 +28,7 @@ private:
 	void	div();
 	void	mod();
 	void	print();
+	void	sort();
 	void	exit();
 
 	std::list<const IOperand *>	stack_;

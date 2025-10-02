@@ -19,6 +19,8 @@ public:
 	IOperand const * operator%(IOperand const & rhs) const; // Modulo
 
 	bool operator==(IOperand const & rhs) const;
+	bool operator<(IOperand const & rhs) const;
+	bool operator>(IOperand const & rhs) const;
 
 	int getPrecision(void) const;
 	e_OperandType getType(void) const;

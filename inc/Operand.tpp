@@ -210,3 +210,37 @@ bool	Operand<T>::operator==(IOperand const & rhs) const
 	else
 		return (static_cast<double>(value_) == std::stod(rhs.toString()));
 }
+
+template <typename T>
+inline bool Operand<T>::operator<(IOperand const &rhs) const
+{
+	std::string value;
+	e_OperandType e = rhs.getType();
+
+	if (type_ >= e)
+		e = type_;
+
+	if (e < Float)
+		return (static_cast<int32_t>(value_) < std::stoi(rhs.toString()));
+	else if (e == Float)
+		return (static_cast<float>(value_) < std::stof(rhs.toString()));
+	else
+		return (static_cast<double>(value_) < std::stod(rhs.toString()));
+}
+
+template <typename T>
+inline bool Operand<T>::operator>(IOperand const &rhs) const
+{
+	std::string value;
+	e_OperandType e = rhs.getType();
+
+	if (type_ >= e)
+		e = type_;
+
+	if (e < Float)
+		return (static_cast<int32_t>(value_) > std::stoi(rhs.toString()));
+	else if (e == Float)
+		return (static_cast<float>(value_) > std::stof(rhs.toString()));
+	else
+		return (static_cast<double>(value_) > std::stod(rhs.toString()));
+}

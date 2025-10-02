@@ -27,6 +27,7 @@ e_Operation Parser::toOperation(const std::string& opStr) const
 		{"div", DIV},
 		{"mod", MOD},
 		{"print", PRINT},
+		{"sort", SORT},
 		{"exit", EXIT}
 	};
 

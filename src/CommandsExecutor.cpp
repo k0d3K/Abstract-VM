@@ -169,6 +169,16 @@ void CommandsExecutor::print()
 	std::cout << number << std::endl;
 }
 
+static bool compareForStack(const IOperand* a, const IOperand* b)
+{
+	return *a > *b;
+}
+
+void CommandsExecutor::sort()
+{
+	stack_.sort(compareForStack);
+}
+
 void CommandsExecutor::exit()
 {
 	exit_ = true;
@@ -186,6 +196,7 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> instructions)
 		{DIV, &CommandsExecutor::div},
 		{MOD, &CommandsExecutor::mod},
 		{PRINT,&CommandsExecutor::print},
+		{SORT,&CommandsExecutor::sort},
 		{EXIT, &CommandsExecutor::exit}
 	};
 	static const std::map<e_Operation, void (CommandsExecutor::*)(const IOperand *operand)> argOps = {
