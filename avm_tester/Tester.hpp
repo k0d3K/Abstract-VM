@@ -91,7 +91,7 @@ public:
 		setColorText(BOLT);
 		std::cout << "═════════════════════════════════════════════════════════" << std::endl;
 		
-		std::cout << std::endl << "	Score " << nbCorrectAnswers << "/" << total << "  tests successful ✅" << std::endl;
+		std::cout << std::endl << "	Score " << nbCorrectAnswers << "/" << total << " tests successful ✅" << std::endl;
 		std::cout << std::endl;
 		if (nbWrongAnswers == 0)
 		{
