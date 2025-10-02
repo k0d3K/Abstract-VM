@@ -36,6 +36,13 @@ void printTokens(const std::list<t_ParsedInstr>& tokens)
 
 #endif
 
+void cleanTokens(const std::list<t_ParsedInstr>& tokens)
+{
+	for (const t_ParsedInstr& token : tokens)
+		if (token.operand != nullptr)
+			delete token.operand;
+}
+
 int main(int argc, char **argv)
 {
 	std::istream* input = &std::cin;
@@ -73,12 +80,10 @@ int main(int argc, char **argv)
 	ctd::cout << std::endl;
 #endif
 	if (AVMException::isError())
-	{
 		AVMException::printErrors();
-	}
 	else
 		CommandsExecutor::getInstance().execute(parstokens);
-
+	cleanTokens(parstokens);
 	if (inFile.is_open())
 		inFile.close();
 	return 0;

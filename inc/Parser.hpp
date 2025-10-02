@@ -20,7 +20,7 @@ class Parser
 public:
 	static Parser& getInstance();
 
-	std::list<t_ParsedInstr> parse(std::list<t_LexToken>) const;
+	std::list<t_ParsedInstr> parse(std::list<t_LexToken> &lexTokens) const;
 
 private:
 

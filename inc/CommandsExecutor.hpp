@@ -8,7 +8,7 @@ class CommandsExecutor
 public:
 	static CommandsExecutor& getInstance();
 
-	void execute(std::list<t_ParsedInstr>);
+	void execute(std::list<t_ParsedInstr> &instructions);
 
 private:
 

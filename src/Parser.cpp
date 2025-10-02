@@ -56,7 +56,7 @@ e_OperandType Parser::toType(const std::string& type) const
 }
 
 
-std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> lexTokens) const
+std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> &lexTokens) const
 {
 	std::list<t_ParsedInstr>	parsTokens;
 

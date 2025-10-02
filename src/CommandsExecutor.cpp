@@ -184,7 +184,7 @@ void CommandsExecutor::exit()
 	exit_ = true;
 }
 
-void CommandsExecutor::execute(std::list<t_ParsedInstr> instructions)
+void CommandsExecutor::execute(std::list<t_ParsedInstr> &instructions)
 {
 	static const std::map<e_Operation, void (CommandsExecutor::*)()> noArgOps = {
 		{POP, &CommandsExecutor::pop},
@@ -207,7 +207,7 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> instructions)
 	std::size_t line;
 	try
 	{
-		for (const auto& instr : instructions)
+		for (auto& instr : instructions)
 		{
 			line = instr.line;
 			if (argOps.count(instr.instruction))
@@ -220,6 +220,7 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> instructions)
 				auto fn = noArgOps.at(instr.instruction);
 				(this->*fn)();
 			}
+			instr.operand = nullptr;
 			if (exit_)
 				return;
 		}

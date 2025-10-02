@@ -3,7 +3,6 @@
 
 #include "Exceptions.hpp"
 
-// Definition of the static member
 std::list<Error> AVMException::errors_;
 
 AVMException::AVMException() {}
