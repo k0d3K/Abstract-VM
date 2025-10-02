@@ -48,7 +48,7 @@ static std::string builtErrorMessage(Error &error)
 		{e_ErrorType::NoExitException, "no exit instruction at the end of the program"},
 		{e_ErrorType::FalseAssertException,"the execution stoped because of a false assertion"},
 		{e_ErrorType::ImpossibleInstructionException, "the stack is composed of strictly less that two values when an arithmetic instruction is executed"},
-		{e_ErrorType::InvalidValueFormatException, "invalid value format"},
+		{e_ErrorType::InvalidValueFormatException, "invalid value format fot the given type"},
 		{e_ErrorType::NoValueExpectedException, "no value expected for this instruction"},
 		{e_ErrorType::InvalidPrintException, "impossible to print"}
 	};

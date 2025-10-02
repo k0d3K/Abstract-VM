@@ -8,7 +8,9 @@ OperandFactory& OperandFactory::getInstance() {return *s_instance;}
 
 IOperand const *OperandFactory::createOperand(e_OperandType type, std::string const & value) const
 {
-	if (!isValidValue(value))
+	if (value.empty())
+		throw InvalidValueFormatException("cannot be empty");
+	if (!isValidValue(type, value))
 		throw InvalidValueFormatException(value);
 	switch (type)
 	{
@@ -36,14 +38,14 @@ OperandFactory::OperandFactory(void) {s_instance = this;}
 
 OperandFactory::~OperandFactory(void) {s_instance = nullptr;}
 
-bool OperandFactory::isValidValue(std::string str) const
+bool OperandFactory::isValidValue(e_OperandType type, std::string str) const
 {
 	if (str.empty())
 		return false;
 
 	size_t i = 0;
-	bool hasDot = false;
-	bool hasExp = false;
+	bool hasDot = (type < Float);
+	bool hasExp = (type < Float);
 
 	if (str[0] == '+' || str[0] == '-')
 		i++;

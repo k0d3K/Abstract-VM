@@ -40,9 +40,9 @@ std::list<t_LexToken> Lexer::lexicalAnalisys(std::istream* input) const
 			{
 				findOperandAndType(&token, rest);
 			}
-			catch (std::exception &e)
+			catch (AVMException &e)
 			{
-				throw MissingParException(rest);
+				e.pushError(line_number);
 			}
 		}
 
@@ -61,6 +61,9 @@ void Lexer::findOperandAndType(t_LexToken *token, std::string rest) const
 		if (endParen != std::string::npos)
 			token->literal = rest.substr(parenPos + 1, endParen - parenPos - 1);
 		else
-			throw std::exception();
+		{
+			token->literal = rest.substr(parenPos + 1);
+			throw MissingParException(rest);
+		}
 	}
 } 

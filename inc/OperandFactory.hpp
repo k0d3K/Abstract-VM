@@ -16,7 +16,7 @@ private:
 	OperandFactory(void);
 	~OperandFactory(void);
 
-	bool	isValidValue(std::string str) const;
+	bool	isValidValue(e_OperandType type, std::string str) const;
 
 	IOperand const	*createInt8(std::string const & value) const;
 	IOperand const	*createInt16(std::string const & value) const;

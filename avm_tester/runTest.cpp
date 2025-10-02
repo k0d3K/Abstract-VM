@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
+#include <vector>
 
 #include "Tester.hpp"
 
@@ -64,21 +66,42 @@ void AssertResult(std::string command, std::string result)
 	Tester::assertExpectedEqualsActual(std::string(""), res.stderrStr);
 }
 
-void AssertError(std::string command, std::string result)
+template<typename... Args>
+void AssertError(const std::string& command, Args... expectedLines)
 {
-	AVMResult res = exec(command); 
+	AVMResult res = exec(command);
 
-	std::string s1 = res.stderrStr;
-	std::string s2 = result;
+	std::string stderrLower = res.stderrStr;
+	std::transform(stderrLower.begin(), stderrLower.end(), stderrLower.begin(), ::tolower);
 
-	std::transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
-	std::transform(s2.begin(), s2.end(), s2.begin(), ::tolower);
-	
-	std::size_t found = s1.find(s2);
-	if (found==std::string::npos)
-		Tester::assertExpectedEqualsActual(result, res.stderrStr);
-	else
-		Tester::assertTrue(true);
+	std::istringstream iss(stderrLower);
+	std::vector<std::string> errorLines;
+	std::string line;
+	while (std::getline(iss, line))
+		errorLines.push_back(line);
+
+	std::vector<std::string> expected = { expectedLines... };
+	size_t i = 0;
+	for (; i < expected.size(); ++i)
+	{
+		std::string exp = expected[i];
+		std::transform(exp.begin(), exp.end(), exp.begin(), ::tolower);
+
+		if (i >= errorLines.size())
+			Tester::assertExpectedEqualsActual(expected[i], std::string(""));
+		else
+		{
+			if (errorLines[i].find(exp) == std::string::npos)
+				Tester::assertExpectedEqualsActual(expected[i], errorLines[i]);
+			else
+				Tester::assertTrue(true);
+		}
+	}
+	for (; i < errorLines.size(); ++i)
+	{
+		Tester::assertExpectedEqualsActual(std::string(""), errorLines[i]);
+	}
+
 	Tester::assertExpectedEqualsActual(std::string(""), res.stdoutStr);
 }
 
@@ -100,6 +123,57 @@ void AssertBoth(std::string command, std::string std, std::string err)
 	Tester::assertExpectedEqualsActual(std, res.stdoutStr);
 }
 
+void	parsing_test()
+{
+	Tester::startTest("parsing");
+
+	AssertError("unknown\n", "instruction");
+	AssertError("push	int8(0)\n", "instruction");
+	AssertError("push  int(0)\n", "type");
+	AssertError("push int8()\n", "value format");
+	AssertError("push int\n", "type", "value format");
+	AssertError("push int8(0\n", "parenthesis");
+	AssertError("push int0)\n", "type", "value");
+	AssertError("push int80)\n", "type", "value");
+	AssertError("push int8(0.2)\n", "value format");
+	AssertError("push int8( )\n", "value format");
+	AssertResult("push int8(0)\nexit\n", "");
+	AssertResult("push float(42.42)\nexit\n", "");
+	AssertError("push float(42.42.42)\n", "value format");
+	AssertResult("push float(42e2)\nexit\n", "");
+	AssertError("push float(42e2e2)\n", "value format");
+	AssertResult("push float(42.2e2)\nexit\n", "");
+	AssertError("push float(42e2.2)\n", "value format");
+	AssertResult("\n\n\n\n\n\nexit\n", "");
+	AssertResult("\n\n\npush int8(0)\n\n\ndump\n\n\nexit\n", "0\n");
+	AssertError("assert	int8(0)\n", "instruction");
+	AssertError("assert  int8(0)\n", "type");
+	AssertError("assert int8()\n", "value format");
+	AssertError("assert int\n", "type", "value format");
+	AssertError("assert int8(0\n", "parenthesis");
+	AssertError("assert int0)\n", "type", "value format");
+	AssertError("assert int80)\n", "type", "value format");
+	AssertError("assert int8(0.2)\n", "value format");
+	AssertError("assert int8( )\n", "value format");
+	AssertResult("push int8(0)\nassert int8(0)\nexit\n", "");
+	AssertResult("push float(42.42)\nassert float(42.42)\nexit\n", "");
+	AssertError("assert float(42.42.42)\n", "value format");
+	AssertResult("push float(42e2)\nassert float(42e2)\nexit\n", "");
+	AssertError("assert float(42e2e2)\n", "value format");
+	AssertResult("push float(42.2e2)\nassert float(42.2e2)\nexit\n", "");
+	AssertError("assert float(42e2.2)\n", "value format");
+	AssertResult("\n\n\npush int8(0)\n\n\nassert int8(0)\n\n\ndump\n\n\nexit\n", "0\n");
+	AssertError("pop int8(0)\n", "value");
+	AssertError("swap int8(0)\n", "value");
+	AssertError("dump int8(0)\n", "value");
+	AssertError("add int8(0)\n", "value");
+	AssertError("sub int8(0)\n", "value");
+	AssertError("mul int8(0)\n", "value");
+	AssertError("div int8(0)\n", "value");
+	AssertError("mod int8(0)\n", "value");
+	AssertError("print int8(0)\n", "value");
+	AssertError("exit int8(0)\n", "value");
+}
 
 void push_test()
 {
@@ -152,9 +226,6 @@ void push_test()
 
 	// Push then assert wrong value
 	AssertError("push int8(1)\nassert int8(2)\nexit\n", "assert");
-
-	// Push and then illegal command generates both stdout and stderr
-	AssertBoth("push int32(42)\ndump\nunknowncmd\nexit\n", "", "unknown instruction");
 }
 
 void assert_test()
@@ -581,7 +652,7 @@ void test_swap()
 	// Swap + complex combination
 	AssertResult("push int8(2)\npush int8(3)\npush int8(4)\nswap\nadd\nswap\nmul\ndump\nexit\n", "14\n");
 
-	Tester::startTest("swap");
+	Tester::startTest("swap errors");
 
 	// Swap with overflow check
 	AssertError("push int8(127)\npush int8(1)\nswap\nadd\nexit\n", "overflow");
@@ -591,9 +662,24 @@ void test_swap()
 	AssertError("push int8(5)\nswap\nexit\n", "stack");
 }
 
+void mutliple_errors_tests()
+{
+	Tester::startTest("multiple error");
+	AssertError("push int(0\n", "parenthesis", "type");
+	AssertError(" \n \n \n \n", "instruction", "instruction", "instruction", "instruction");
+	AssertError("push \n", "type", "value");
+	AssertError("push \npush \n", "type", "value", "type", "value");
+	AssertError("push \npush int8", "type", "value", "type", "value");
+	AssertError("push \npush int8(8", "type", "value", "parenthesis");
+	AssertError("errorcomment\n;comment\npush  int(0)\npush int8(0)\npush float(42.42.42)\ndump\n", "instruction", "type", "value format");
+	AssertError("pop int32(0)\n", "value");
+	AssertError("errorcomment\n;comment\npush  int(0)\npush int8(0)\npush float(42.42.42)\ndump\npop int32(0)\n", "instruction", "type", "value format", "value");
+	AssertError("push int8(32)\npush int8(10)\nadd\nerrorcomment\nmul double(0.0)\n;comment\npush float(42.42.42)\ndump\n", "instruction", "value", "value format");
+}
+
 int main()
 {
-	//parsing test
+	parsing_test();
 	push_test();
 	assert_test();
 	pop_test();
@@ -610,7 +696,7 @@ int main()
 	test_comments();
 	std::cout << std::endl << std::endl << "########## BONUS PART ##########" << std::flush;
 	test_swap();
-	//test multi errors
+	mutliple_errors_tests();
 	Tester::printResults();
 	return 0;
 }
