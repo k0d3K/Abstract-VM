@@ -212,8 +212,10 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> &instructions)
 			line = instr.line;
 			if (argOps.count(instr.instruction))
 			{
+				const IOperand *tmp = instr.operand;
 				auto fn = argOps.at(instr.instruction);
-				(this->*fn)(instr.operand);
+				instr.operand = nullptr;
+				(this->*fn)(tmp);
 			}
 			else if (noArgOps.count(instr.instruction))
 			{
