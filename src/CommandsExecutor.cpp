@@ -171,7 +171,7 @@ void CommandsExecutor::print()
 
 static bool compareForStack(const IOperand* a, const IOperand* b)
 {
-	return *a > *b;
+	return *a < *b;
 }
 
 void CommandsExecutor::sort()
