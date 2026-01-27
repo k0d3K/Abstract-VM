@@ -61,7 +61,6 @@ The Abstract VM can detect and report the following errors, grouped by parsing a
 - An instruction is unknown
 - Overflow on a value
 - Underflow on a value
-- The program doesn’t have an exit instruction
 - Invalid or unsupported operand type.
 - Missing or malformed parentheses in an operand.
 - Invalid value format for an operand.
@@ -74,6 +73,7 @@ The Abstract VM can detect and report the following errors, grouped by parsing a
 - Division or modulo by zero.
 - Instruction is syntactically valid but cannot be executed in the current context.
 - Print instruction used on an invalid operand type.
+- The program doesn’t have an exit instruction
 
 ## Execution
 
