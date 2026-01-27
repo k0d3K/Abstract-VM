@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	{
 		if (std::string(argv[1]).empty())
 		{
-			std::cout << "Error: search string must not be empty." << std::endl;
+			std::cout << "Error: file argument must not be empty." << std::endl;
 			return 1;
 		}
 		inFile.open(argv[1]);

@@ -19,7 +19,10 @@ AVMException::~AVMException() noexcept {}
 
 AVMException	&AVMException::operator=(AVMException const & rhs) {(void)rhs; return *this;}
  
-bool AVMException::isError() {return !errors_.empty();}
+bool AVMException::isError()
+{
+	return !errors_.empty();
+}
 
 static bool compareByLine(const Error& a, const Error& b)
 {
@@ -46,7 +49,7 @@ static std::string builtErrorMessage(Error &error)
 		{e_ErrorType::DivModByZeroException, "division or modulo by 0"},
 		{e_ErrorType::NoExitException, "no exit instruction at the end of the program"},
 		{e_ErrorType::FalseAssertException,"the execution stoped because of a false assertion"},
-		{e_ErrorType::ImpossibleInstructionException, "the stack is composed of strictly less that two values when an arithmetic instruction is executed"},
+		{e_ErrorType::ImpossibleInstructionException, "the stack is composed of strictly less than two values when an arithmetic instruction is executed"},
 		{e_ErrorType::InvalidValueFormatException, "invalid value format fot the given type"},
 		{e_ErrorType::NoValueExpectedException, "no value expected for this instruction"},
 		{e_ErrorType::InvalidPrintException, "impossible to print"}
@@ -70,9 +73,7 @@ void AVMException::printErrors()
 	sortErrors();
 
 	for (Error& error : errors_)
-	{
 		std::cerr << builtErrorMessage(error) << std::endl;
-	}
 }
 
 void AVMException::pushError(std::size_t line)
