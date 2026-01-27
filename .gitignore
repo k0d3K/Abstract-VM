@@ -1,5 +1,5 @@
 .vscode
 avm
 avm_debug
-tester
+avm_tester
 *.o

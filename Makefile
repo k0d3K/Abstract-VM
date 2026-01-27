@@ -3,7 +3,7 @@
 BUILD_DIR		:= .build/
 NAME			:= avm
 DEBUG_NAME		:= $(NAME)_debug
-TESTER_NAME		:= tester
+TESTER_NAME		:= $(NAME)_tester
 CXX				:= c++
 CXXFLAGS		+= -Wall -Wextra -Werror -g
 
@@ -50,7 +50,7 @@ $(BUILD_DIR)%_debug.o: $(SRC_DIR)%.cpp | $(OBJ_DIR)
 	@echo "$(GREEN)Compiling debug : $(MAGENTA)$<$(INIT)"
 	@$(CXX) $(CXXFLAGS) -D DEBUG=1 -c $< -o $@ -Iinc
 
-$(BUILD_DIR)%.o:	avm_tester/%.cpp | $(OBJ_DIR)
+$(BUILD_DIR)%.o:	tester/%.cpp | $(OBJ_DIR)
 	@echo "$(GREEN)Compiling : $(MAGENTA)$<$(INIT)"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ -Iinc
 
@@ -61,10 +61,10 @@ $(DEBUG_NAME):	$(DEBUG_OBJ)
 debug: $(DEBUG_NAME)
 
 $(TESTER_NAME):	$(NAME) $(OBJ_TESTER)
-	@$(CXX) $(CXXFLAGS) $(OBJ_TESTER) -o tester -Iinc -Itester
-	@echo "$(GREEN)tester ready ✅️$(INIT)"
+	@$(CXX) $(CXXFLAGS) $(OBJ_TESTER) -o $(TESTER_NAME) -Iinc -Itester
+	@echo "$(GREEN)$(TESTER_NAME) ready ✅️$(INIT)"
 
-test : $(TESTER_NAME)
+test: $(TESTER_NAME)
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -94,4 +94,4 @@ re:		fclean all
 red:	fclean debug
 ret:	fclean test
 
-.PHONY: all clean fclean test re ret
+.PHONY: all clean fclean debug test re red ret

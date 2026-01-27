@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include <unistd.h>
 
 #include "Tester.hpp"
 
@@ -725,8 +726,17 @@ void mutliple_errors_tests()
 	AssertError("push int8(32)\npush int8(10)\nadd\nerrorcomment\nmul double(0.0)\n;comment\npush float(42.42.42)\ndump\n", "instruction", "value", "value format");
 }
 
+bool fileExistsAndExecutable(const std::string& filename)
+{
+	return (access(filename.c_str(), F_OK | X_OK) == 0); // F_OK checks existence, X_OK checks execute permission
+}
+
 int main()
 {
+	if (!fileExistsAndExecutable("avm")) {
+		std::cout << "Error: avm executable not found!" << std::endl;
+		exit(1);
+	}
 	parsing_test();
 	push_test();
 	assert_test();
