@@ -83,7 +83,7 @@ std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> &lexTokens) const
 
 			try
 			{
-				parsToken.operand = OperandFactory::getInstance().createOperand(parsToken.operandType, lexToken.literal);;
+				parsToken.operand = OperandFactory::getInstance().createOperand(parsToken.operandType, lexToken.literal);
 			}
 			catch (AVMException &e)
 			{
@@ -113,4 +113,3 @@ void Parser::cleanTokens(const std::list<t_ParsedInstr>& tokens)
 		if (token.operand != nullptr)
 			delete token.operand;
 }
-

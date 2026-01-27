@@ -193,4 +193,3 @@ IOperand const	*OperandFactory::createDouble(std::string const & value) const
 	else
 		return (new Operand<double>(static_cast<double>(num)));
 }
-
