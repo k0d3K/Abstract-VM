@@ -42,7 +42,7 @@ static std::string builtErrorMessage(Error &error)
 	static const std::map<e_ErrorType, const char *> explain = {
 		{e_ErrorType::InvalidTypeException, "syntax error : unknown type"},
 		{e_ErrorType::MissingParException, "syntax error : missing parenthesis"},
-		{e_ErrorType::UnknownInstructionException, " unknown instruction"},
+		{e_ErrorType::UnknownInstructionException, "unknown instruction"},
 		{e_ErrorType::OverflowException, "overflow"},
 		{e_ErrorType::UnderflowException, "underflow"},
 		{e_ErrorType::EmtpyStackException, "impossible instruction, the stack is empty"},
@@ -50,7 +50,7 @@ static std::string builtErrorMessage(Error &error)
 		{e_ErrorType::NoExitException, "no exit instruction at the end of the program"},
 		{e_ErrorType::FalseAssertException,"the execution stoped because of a false assertion"},
 		{e_ErrorType::ImpossibleInstructionException, "the stack is composed of strictly less than two values when an arithmetic instruction is executed"},
-		{e_ErrorType::InvalidValueFormatException, "invalid value format fot the given type"},
+		{e_ErrorType::InvalidValueFormatException, "invalid value format for the given type"},
 		{e_ErrorType::NoValueExpectedException, "no value expected for this instruction"},
 		{e_ErrorType::InvalidPrintException, "impossible to print"}
 	};
