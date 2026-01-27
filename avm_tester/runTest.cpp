@@ -127,6 +127,7 @@ void	parsing_test()
 {
 	Tester::startTest("parsing");
 
+	AssertError("", "exit");
 	AssertError("unknown\n", "instruction");
 	AssertError("push	int8(0)\n", "instruction");
 	AssertError("push  int(0)\n", "type");

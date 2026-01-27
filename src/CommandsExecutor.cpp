@@ -204,7 +204,7 @@ void CommandsExecutor::execute(std::list<t_ParsedInstr> &instructions)
 		{ASSERT, &CommandsExecutor::assert}
 	};
 
-	std::size_t line;
+	std::size_t line = 0;
 	try
 	{
 		for (auto& instr : instructions)
