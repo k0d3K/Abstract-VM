@@ -92,14 +92,8 @@ std::list<t_ParsedInstr> Parser::parse(std::list<t_LexToken> &lexTokens) const
 		}
 		else if (!lexToken.operandType.empty() || !lexToken.literal.empty())
 		{
-			try
-			{
-				throw NoValueExpectedException();
-			}
-			catch (AVMException &e)
-			{
-				e.pushError(lexToken.line);
-			}
+			NoValueExpectedException e;
+			e.pushError(lexToken.line);
 		}
 
 		parsTokens.push_back(parsToken);
