@@ -676,34 +676,34 @@ void test_sort()
 	AssertResult("push int8(1)\nsort\ndump\nexit\n", "1\n");
 
 	// Two elements already sorted
-	AssertResult("push int8(1)\npush int8(2)\nsort\ndump\nexit\n", "1\n2\n");
+	AssertResult("push int8(1)\npush int8(2)\nsort\ndump\nexit\n", "2\n1\n");
 
 	// Two elements reversed
-	AssertResult("push int8(2)\npush int8(1)\nsort\ndump\nexit\n", "1\n2\n");
+	AssertResult("push int8(2)\npush int8(1)\nsort\ndump\nexit\n", "2\n1\n");
 
 	// Three mixed integers
-	AssertResult("push int8(2)\npush int8(1)\npush int32(9)\nsort\ndump\nexit\n", "1\n2\n9\n");
+	AssertResult("push int8(2)\npush int8(1)\npush int32(9)\nsort\ndump\nexit\n", "9\n2\n1\n");
 
 	// Mixed int, float, double
-	AssertResult("push int8(2)\npush float(2.5)\npush double(1.9)\nsort\ndump\nexit\n", "1.9\n2\n2.5\n");
+	AssertResult("push int8(2)\npush float(2.5)\npush double(1.9)\nsort\ndump\nexit\n", "2.5\n2\n1.9\n");
 
 	// Duplicates
-	AssertResult("push int8(3)\npush int8(1)\npush int8(3)\npush int8(2)\nsort\ndump\nexit\n", "1\n2\n3\n3\n");
+	AssertResult("push int8(3)\npush int8(1)\npush int8(3)\npush int8(2)\nsort\ndump\nexit\n", "3\n3\n2\n1\n");
 
 	// Negative values
-	AssertResult("push int8(-5)\npush int8(2)\npush int8(-1)\nsort\ndump\nexit\n", "-5\n-1\n2\n");
+	AssertResult("push int8(-5)\npush int8(2)\npush int8(-1)\nsort\ndump\nexit\n", "2\n-1\n-5\n");
 
 	// Mix negatives and positives with float
-	AssertResult("push float(-3.2)\npush int8(0)\npush double(1.1)\npush int32(-10)\nsort\ndump\nexit\n", "-10\n-3.2\n0\n1.1\n");
+	AssertResult("push float(-3.2)\npush int8(0)\npush double(1.1)\npush int32(-10)\nsort\ndump\nexit\n", "1.1\n0\n-3.2\n-10\n");
 
 	// Larger values
-	AssertResult("push int32(1000)\npush int32(42)\npush int8(-128)\npush double(9999.99)\nsort\ndump\nexit\n", "-128\n42\n1000\n9999.99\n");
+	AssertResult("push int32(1000)\npush int32(42)\npush int8(-128)\npush double(9999.99)\nsort\ndump\nexit\n", "9999.99\n1000\n42\n-128\n");
 
 	// Already sorted
-	AssertResult("push int8(-2)\npush int8(0)\npush int8(5)\nsort\ndump\nexit\n", "-2\n0\n5\n");
+	AssertResult("push int8(-2)\npush int8(0)\npush int8(5)\nsort\ndump\nexit\n", "5\n0\n-2\n");
 
 	// Reverse sorted
-	AssertResult("push int8(5)\npush int8(0)\npush int8(-2)\nsort\ndump\nexit\n", "-2\n0\n5\n");
+	AssertResult("push int8(5)\npush int8(0)\npush int8(-2)\nsort\ndump\nexit\n", "5\n0\n-2\n");
 
 	Tester::startTest("sort errors");
 
