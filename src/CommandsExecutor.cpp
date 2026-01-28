@@ -12,7 +12,7 @@ CommandsExecutor &CommandsExecutor::operator=(CommandsExecutor const & rhs) {(vo
 
 CommandsExecutor::CommandsExecutor(CommandsExecutor const & rhs) {(void)rhs;}
 
-CommandsExecutor::CommandsExecutor(void) : exit_(false) {}
+CommandsExecutor::CommandsExecutor(void) : exit_(false), right_(nullptr), left_(nullptr) {}
 
 CommandsExecutor::~CommandsExecutor(void)
 {
@@ -20,6 +20,16 @@ CommandsExecutor::~CommandsExecutor(void)
 	{
 		if (operand != nullptr)
 			delete operand;
+	}
+	if (left_ != nullptr)
+	{
+		delete left_;
+		left_ = nullptr;
+	}
+	if (right_ != nullptr)
+	{
+		delete right_;
+		right_ = nullptr;
 	}
 }
 
@@ -58,12 +68,12 @@ void CommandsExecutor::swap()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("swap");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	stack_.push_back(right);
-	stack_.push_back(left);
+	stack_.push_back(right_);
+	stack_.push_back(left_);
 }
 
 void CommandsExecutor::dump()
@@ -80,80 +90,80 @@ void CommandsExecutor::add()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("add");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * result = *left + *right;
+	const IOperand * result = *left_ + *right_;
 	stack_.push_back(result);
-	delete left;
-	left = nullptr;
-	delete right;
-	right = nullptr;
+	delete left_;
+	left_ = nullptr;
+	delete right_;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::sub()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("sub");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * result = *left - *right;
+	const IOperand * result = *left_ - *right_;
 	stack_.push_back(result);
-	delete left;
-	left = nullptr;
-	delete right;
-	right = nullptr;
+	delete left_;
+	left_ = nullptr;
+	delete right_;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::mul()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("mul");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * result = *left * *right;
+	const IOperand * result = *left_ * *right_;
 	stack_.push_back(result);
-	delete left;
-	left = nullptr;
-	delete right;
-	right = nullptr;
+	delete left_;
+	left_ = nullptr;
+	delete right_;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::div()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("div");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * result = *left / *right;
+	const IOperand * result = *left_ / *right_;
 	stack_.push_back(result);
-	delete left;
-	left = nullptr;
-	delete right;
-	right = nullptr;
+	delete left_;
+	left_ = nullptr;
+	delete right_;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::mod()
 {
 	if (stack_.size() < 2)
 		throw ImpossibleInstructionException("mod");
-	const IOperand * right = stack_.back();
+	right_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * left = stack_.back();
+	left_ = stack_.back();
 	stack_.pop_back();
-	const IOperand * result = *left % *right;
+	const IOperand * result = *left_ % *right_;
 	stack_.push_back(result);
-	delete left;
-	left = nullptr;
-	delete right;
-	right = nullptr;
+	delete left_;
+	left_ = nullptr;
+	delete right_;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::print()

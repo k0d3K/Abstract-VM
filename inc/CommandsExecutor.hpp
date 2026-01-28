@@ -33,4 +33,6 @@ private:
 
 	std::list<const IOperand *>	stack_;
 	bool						exit_;
+	const IOperand * 			right_;
+	const IOperand * 			left_;
 };
