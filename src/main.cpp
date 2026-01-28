@@ -79,5 +79,8 @@ int main(int argc, char **argv)
 	Parser::cleanTokens(parstokens);
 	if (inFile.is_open())
 		inFile.close();
-	return 0;
+	if (AVMException::isError())
+		return 1;
+	else
+		return 0;
 }
