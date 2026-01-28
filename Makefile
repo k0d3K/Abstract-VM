@@ -85,9 +85,9 @@ fclean:	clean
 		echo "$(RED)Removing : $(MAGENTA)$(DEBUG_NAME)$(INIT)";\
 		rm -f $(DEBUG_NAME) ;\
 	fi;
-	@if [ -f tester ]; then\
-		echo "$(RED)Removing : $(MAGENTA)tester$(INIT)";\
-		rm -f tester;\
+	@if [ -f $(TESTER_NAME) ]; then\
+		echo "$(RED)Removing : $(MAGENTA)$(TESTER_NAME)$(INIT)";\
+		rm -f $(TESTER_NAME);\
 	fi;
 
 re:		fclean all
