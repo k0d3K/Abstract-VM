@@ -74,6 +74,8 @@ void CommandsExecutor::swap()
 	stack_.pop_back();
 	stack_.push_back(right_);
 	stack_.push_back(left_);
+	left_ = nullptr;
+	right_ = nullptr;
 }
 
 void CommandsExecutor::dump()
